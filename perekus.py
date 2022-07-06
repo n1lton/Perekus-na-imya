@@ -1,24 +1,20 @@
 from random import randint
-from sqlite3 import connect
-
-db = connect("data.db")
-cur = db.cursor()
-
+import json
 def perekus(text: str):
     newText = ""
-    a = ord("а")
-    alphabet = [chr(i) for i in range(a, a+32)]
+    with open("data.json", "r", encoding="utf-8") as f:
+        words = json.load(f)
 
     for letter in text:
         letter = letter.lower()
         if letter == " ":
             newText += "\n"
 
-        elif letter in alphabet:
-            lines = cur.execute(f"SELECT words FROM perekus WHERE id = '{letter}'").fetchone()[0].split(";")
-            index = randint(0, len(lines)-1)
-            line = lines[index].capitalize()
-            newText += f"{letter.capitalize()} - {line}\n"
+        elif letter in words:
+            
+            index = randint(0, len(words[letter])-1)
+            word = words[letter][index].capitalize()
+            newText += f"{letter.capitalize()} - {word}\n"
 
     return newText
 
