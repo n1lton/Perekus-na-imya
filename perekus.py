@@ -1,6 +1,6 @@
 from random import randint
 import json
-def perekus(text: str):
+def perekus(text: str, mode: str):
     newText = ""
     with open("data.json", "r", encoding="utf-8") as f:
         words = json.load(f)
@@ -11,17 +11,19 @@ def perekus(text: str):
             newText += "\n"
 
         elif letter in words:
-            
             index = randint(0, len(words[letter])-1)
             word = words[letter][index].capitalize()
-            newText += f"{letter.capitalize()} - {word}\n"
+            if mode.lower() == "yes":
+                newText += f"{letter.capitalize()} - {word}\n"
+            else: newText += f"{word}\n"
 
     return newText
 
 
 def main():
     name = input("Перекус на имя: ")
-    print(f"\n\nПерекус на имя {name}:\n" + perekus(name))
+    mode = input("Показывать буквы? (yes) ")
+    print(f"\n\nПерекус на имя {name}:\n" + perekus(name, mode))
 
 
 if __name__ == "__main__":
